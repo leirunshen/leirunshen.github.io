@@ -1,0 +1,473 @@
+/* 全局样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    overflow-x: hidden;
+}
+
+/* 东软蓝配色方案 */
+:root {
+    --neusoft-blue: #0066cc;
+    --neusoft-blue-light: #0080ff;
+    --neusoft-blue-dark: #004c99;
+    --neusoft-blue-lightest: #e6f0fa;
+    --text-color: #333;
+    --light-gray: #f5f5f5;
+    --border-color: #ddd;
+    --white: #ffffff;
+    --shadow: 0 4px 12px rgba(0, 102, 204, 0.15);
+}
+
+/* 页面容器 */
+.page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* 背景设计 */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--neusoft-blue-lightest) 0%, var(--white) 100%);
+    z-index: -1;
+}
+
+/* 装饰元素 */
+.decoration {
+    position: fixed;
+    z-index: -1;
+    opacity: 0.1;
+}
+
+.decoration-1 {
+    top: 10%;
+    left: 5%;
+    width: 200px;
+    height: 200px;
+    background: var(--neusoft-blue);
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+}
+
+.decoration-2 {
+    top: 50%;
+    right: 5%;
+    width: 150px;
+    height: 150px;
+    background: var(--neusoft-blue-light);
+    border-radius: 50%;
+    animation: float 8s ease-in-out infinite reverse;
+}
+
+.decoration-3 {
+    bottom: 10%;
+    left: 15%;
+    width: 180px;
+    height: 180px;
+    background: var(--neusoft-blue-dark);
+    border-radius: 50%;
+    animation: float 7s ease-in-out infinite 1s;
+}
+
+/* 浮动动画 */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(5deg);
+    }
+}
+
+/* 登录页面样式 */
+.login-container {
+    max-width: 420px;
+    margin: 100px auto;
+    padding: 48px;
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    transform: translateY(0);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.2);
+}
+
+.login-container h2 {
+    color: var(--text-color);
+    font-size: 16px;
+    margin-bottom: 12px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.login-container h1 {
+    color: var(--neusoft-blue);
+    font-size: 28px;
+    margin-bottom: 36px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+/* 表单样式 */
+.form-group {
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-color);
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background-color: var(--white);
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--neusoft-blue);
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+    background-color: var(--neusoft-blue-lightest);
+}
+
+/* 按钮样式 */
+.login-btn {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--neusoft-blue);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+    margin-top: 8px;
+}
+
+.login-btn:hover {
+    background-color: var(--neusoft-blue-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+}
+
+.login-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 102, 204, 0.2);
+}
+
+.permission-tip {
+    margin-top: 24px;
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.permission-tip a {
+    color: var(--neusoft-blue);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.permission-tip a:hover {
+    color: var(--neusoft-blue-dark);
+    text-decoration: underline;
+}
+
+/* 主页面样式 */
+.header {
+    background-color: var(--neusoft-blue);
+    color: var(--white);
+    padding: 24px 40px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.header h2 {
+    font-size: 16px;
+    margin-bottom: 12px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.header h1 {
+    font-size: 28px;
+    margin-bottom: 12px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+.main-content {
+    flex: 1;
+    padding: 60px 40px;
+    text-align: center;
+    position: relative;
+}
+
+.dashboard-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 40px;
+}
+
+.dashboard-btn {
+    padding: 16px 28px;
+    background-color: var(--neusoft-blue);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow);
+    min-width: 140px;
+}
+
+.dashboard-btn:hover {
+    background-color: var(--neusoft-blue-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.3);
+}
+
+.dashboard-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.2);
+}
+
+.dashboard-btn.home-btn {
+    background-color: var(--neusoft-blue);
+}
+
+.dashboard-btn.sales-btn {
+    background-color: #0088cc;
+}
+
+.dashboard-btn.marketing-btn {
+    background-color: #0077b3;
+}
+
+.dashboard-btn.user-btn {
+    background-color: #006699;
+}
+
+.dashboard-btn.report-btn {
+    background-color: var(--neusoft-blue-dark);
+}
+
+.report-btn:hover {
+    background-color: var(--neusoft-blue-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.3);
+}
+
+.report-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.2);
+}
+
+/* Power BI 容器样式 */
+#powerbi-container {
+    margin-top: 0;
+    width: 100%;
+    height: calc(100vh - 60px);
+}
+
+.back-btn {
+    padding: 12px 24px;
+    background-color: var(--neusoft-blue);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 24px;
+    float: left;
+    box-shadow: 0 2px 8px rgba(0, 102, 204, 0.2);
+}
+
+.back-btn:hover {
+    background-color: var(--neusoft-blue-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+}
+
+.back-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 102, 204, 0.2);
+}
+
+#powerbi-iframe {
+    width: 100%;
+    height: calc(100% - 80px);
+    border: none;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+#powerbi-iframe:hover {
+    box-shadow: 0 8px 24px rgba(0, 102, 204, 0.2);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .login-container {
+        margin: 60px auto;
+        padding: 36px;
+        max-width: 90%;
+    }
+
+    .login-container h1 {
+        font-size: 24px;
+    }
+
+    .login-container h2 {
+        font-size: 14px;
+    }
+
+    .header {
+        padding: 20px 24px;
+    }
+
+    .header h1 {
+        font-size: 24px;
+    }
+
+    .header h2 {
+        font-size: 14px;
+    }
+
+    .main-content {
+        padding: 40px 24px;
+    }
+
+    .dashboard-buttons {
+        gap: 12px;
+    }
+
+    .dashboard-btn {
+        padding: 14px 24px;
+        font-size: 14px;
+        min-width: 120px;
+    }
+
+    .report-btn {
+        padding: 16px 32px;
+        font-size: 16px;
+    }
+
+    #powerbi-container {
+        height: calc(100vh - 50px);
+    }
+
+    #powerbi-iframe {
+        height: calc(100% - 70px);
+    }
+
+    .back-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        margin: 40px auto;
+        padding: 28px;
+    }
+
+    .login-container h1 {
+        font-size: 22px;
+    }
+
+    .login-container h2 {
+        font-size: 13px;
+    }
+
+    .header {
+        padding: 16px 20px;
+    }
+
+    .header h1 {
+        font-size: 22px;
+    }
+
+    .header h2 {
+        font-size: 13px;
+    }
+
+    .main-content {
+        padding: 30px 20px;
+    }
+
+    .report-btn {
+        padding: 14px 28px;
+        font-size: 16px;
+    }
+
+    #powerbi-container {
+        height: calc(100vh - 40px);
+    }
+
+    #powerbi-iframe {
+        height: calc(100% - 60px);
+    }
+
+    .back-btn {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    /* 调整装饰元素大小 */
+    .decoration-1 {
+        width: 120px;
+        height: 120px;
+    }
+
+    .decoration-2 {
+        width: 100px;
+        height: 100px;
+    }
+
+    .decoration-3 {
+        width: 110px;
+        height: 110px;
+    }
+}

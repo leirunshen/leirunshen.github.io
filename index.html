@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>服装销售分析系统</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- 装饰元素 -->
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+    <div class="decoration decoration-3"></div>
+    
+    <!-- 登录页面 -->
+    <div id="login-page" class="page">
+        <div class="login-container">
+            <h2>成都东软学院毕业设计</h2>
+            <h1>服装销售分析系统</h1>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="login-btn">登录</button>
+                <p class="permission-tip">没有登录权限？请发邮件给 <a href="mailto:leirunshen@aliyun.com">leirunshen@aliyun.com</a> 申请权限</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- 主页面 -->
+    <div id="main-page" class="page" style="display: none;">
+        <header class="header">
+            <h2>成都东软学院毕业设计</h2>
+            <h1>服装销售分析系统</h1>
+        </header>
+        <main class="main-content">
+            <div class="dashboard-buttons">
+                <button class="dashboard-btn home-btn">首页</button>
+                <button class="dashboard-btn sales-btn">销售看板</button>
+                <button class="dashboard-btn marketing-btn">推广看板</button>
+                <button class="dashboard-btn user-btn">用户管理</button>
+                <button id="report-btn" class="dashboard-btn report-btn">查看报表</button>
+            </div>
+            <!-- Power BI 嵌入区域 -->
+            <div id="powerbi-container" style="display: none;">
+                <button id="back-btn" class="back-btn">返回</button>
+                <iframe id="powerbi-iframe" src="" width="100%" height="800px" frameborder="0"></iframe>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
