@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户管理 - 服装销售分析系统</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 用户管理页面样式 */
+        .user-management {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .user-management h1 {
+            color: var(--neusoft-blue);
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .action-buttons {
+            margin-bottom: 30px;
+            text-align: right;
+        }
+
+        .add-user-btn {
+            padding: 12px 24px;
+            background-color: var(--neusoft-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-user-btn:hover {
+            background-color: var(--neusoft-blue-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 136, 204, 0.3);
+        }
+
+        .user-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        .user-table th,
+        .user-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .user-table th {
+            background-color: var(--neusoft-blue-lightest);
+            font-weight: 600;
+            color: var(--neusoft-blue-dark);
+        }
+
+        .user-table tr:hover {
+            background-color: var(--neusoft-blue-lightest);
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .edit-btn,
+        .delete-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .edit-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background-color: #45a049;
+        }
+
+        .delete-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        /* 模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 12px;
+            width: 400px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal h2 {
+            color: var(--neusoft-blue);
+            font-size: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--neusoft-blue);
+            box-shadow: 0 0 0 2px rgba(0, 136, 204, 0.1);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 30px;
+        }
+
+        .cancel-btn,
+        .save-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cancel-btn {
+            background-color: #f1f1f1;
+            color: var(--text-color);
+        }
+
+        .save-btn {
+            background-color: var(--neusoft-blue);
+            color: var(--white);
+        }
+
+        .cancel-btn:hover {
+            background-color: #ddd;
+        }
+
+        .save-btn:hover {
+            background-color: var(--neusoft-blue-dark);
+        }
+
+        .back-to-main {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back-btn {
+            padding: 10px 20px;
+            background-color: var(--neusoft-blue-lightest);
+            color: var(--neusoft-blue);
+            border: 1px solid var(--neusoft-blue);
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            background-color: var(--neusoft-blue);
+            color: var(--white);
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .user-management {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            .modal-content {
+                width: 90%;
+                margin: 20% auto;
+                padding: 20px;
+            }
+
+            .user-table {
+                font-size: 14px;
+            }
+
+            .user-table th,
+            .user-table td {
+                padding: 8px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 装饰元素 -->
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+    <div class="decoration decoration-3"></div>
+
+    <div class="user-management">
+        <h1>用户管理</h1>
+        
+        <div class="action-buttons">
+            <button class="add-user-btn" onclick="openAddUserModal()">新增用户</button>
+        </div>
+
+        <table class="user-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>用户名</th>
+                    <th>姓名</th>
+                    <th>邮箱</th>
+                    <th>角色</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="user-list">
+                <!-- 用户列表将通过JavaScript动态生成 -->
+            </tbody>
+        </table>
+
+        <div class="back-to-main">
+            <a href="index.html?page=main" class="back-btn">返回主页面</a>
+        </div>
+    </div>
+
+    <!-- 新增/编辑用户模态框 -->
+    <div id="user-modal" class="modal">
+        <div class="modal-content">
+            <h2 id="modal-title">新增用户</h2>
+            <form id="user-form">
+                <input type="hidden" id="user-id">
+                
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="fullname">姓名</label>
+                    <input type="text" id="fullname" name="fullname" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">邮箱</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="role">角色</label>
+                    <select id="role" name="role" required>
+                        <option value="user">普通用户</option>
+                        <option value="admin">管理员</option>
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="cancel-btn" onclick="closeModal()">取消</button>
+                    <button type="submit" class="save-btn">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // 获取当前登录用户
+        function getCurrentUser() {
+            return JSON.parse(localStorage.getItem('currentUser'));
+        }
+
+        // 检查是否是管理员
+        function isAdmin() {
+            const currentUser = getCurrentUser();
+            return currentUser && currentUser.role === 'admin';
+        }
+
+        // 初始化用户数据
+        function initUsers() {
+            const users = localStorage.getItem('users');
+            if (!users) {
+                // 默认管理员用户
+                const defaultUsers = [
+                    {
+                        id: 1,
+                        username: 'admin',
+                        password: 'lrs123456', // 实际项目中应该加密存储
+                        fullname: '管理员',
+                        email: 'leirunshen@aliyun.com',
+                        role: 'admin',
+                        created_at: new Date().toISOString()
+                    },
+                    {
+                        id: 2,
+                        username: 'user',
+                        password: 'password123',
+                        fullname: '普通用户',
+                        email: 'user@example.com',
+                        role: 'user',
+                        created_at: new Date().toISOString()
+                    }
+                ];
+                localStorage.setItem('users', JSON.stringify(defaultUsers));
+            }
+        }
+
+        // 获取用户列表
+        function getUsers() {
+            initUsers();
+            return JSON.parse(localStorage.getItem('users'));
+        }
+
+        // 保存用户列表
+        function saveUsers(users) {
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+
+        // 渲染用户列表
+        function renderUserList() {
+            const users = getUsers();
+            const userList = document.getElementById('user-list');
+            userList.innerHTML = '';
+            const admin = isAdmin();
+
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                const actionsHtml = admin ? `
+                    <div class="user-actions">
+                        <button class="edit-btn" onclick="openEditUserModal(${user.id})">编辑</button>
+                        <button class="delete-btn" onclick="deleteUser(${user.id})">删除</button>
+                    </div>
+                ` : '<span>无权限</span>';
+                
+                row.innerHTML = `
+                    <td>${user.id}</td>
+                    <td>${user.username}</td>
+                    <td>${user.fullname}</td>
+                    <td>${user.email}</td>
+                    <td>${user.role === 'admin' ? '管理员' : '普通用户'}</td>
+                    <td>${new Date(user.created_at).toLocaleString()}</td>
+                    <td>${actionsHtml}</td>
+                `;
+                userList.appendChild(row);
+            });
+        }
+
+        // 打开新增用户模态框
+        function openAddUserModal() {
+            if (!isAdmin()) {
+                alert('只有管理员才能新增用户');
+                return;
+            }
+            document.getElementById('modal-title').textContent = '新增用户';
+            document.getElementById('user-form').reset();
+            document.getElementById('user-id').value = '';
+            document.getElementById('user-modal').style.display = 'block';
+        }
+
+        // 打开编辑用户模态框
+        function openEditUserModal(id) {
+            if (!isAdmin()) {
+                alert('只有管理员才能编辑用户');
+                return;
+            }
+            const users = getUsers();
+            const user = users.find(u => u.id === id);
+            if (user) {
+                document.getElementById('modal-title').textContent = '编辑用户';
+                document.getElementById('user-id').value = user.id;
+                document.getElementById('username').value = user.username;
+                document.getElementById('password').value = user.password;
+                document.getElementById('fullname').value = user.fullname;
+                document.getElementById('email').value = user.email;
+                document.getElementById('role').value = user.role;
+                document.getElementById('user-modal').style.display = 'block';
+            }
+        }
+
+        // 关闭模态框
+        function closeModal() {
+            document.getElementById('user-modal').style.display = 'none';
+        }
+
+        // 保存用户
+        document.getElementById('user-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!isAdmin()) {
+                alert('只有管理员才能保存用户');
+                return;
+            }
+            
+            const id = parseInt(document.getElementById('user-id').value);
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const fullname = document.getElementById('fullname').value;
+            const email = document.getElementById('email').value;
+            const role = document.getElementById('role').value;
+
+            const users = getUsers();
+
+            if (id) {
+                // 更新用户
+                const userIndex = users.findIndex(u => u.id === id);
+                if (userIndex !== -1) {
+                    users[userIndex] = {
+                        ...users[userIndex],
+                        username,
+                        password,
+                        fullname,
+                        email,
+                        role
+                    };
+                }
+            } else {
+                // 新增用户
+                const newUser = {
+                    id: users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1,
+                    username,
+                    password,
+                    fullname,
+                    email,
+                    role,
+                    created_at: new Date().toISOString()
+                };
+                users.push(newUser);
+            }
+
+            saveUsers(users);
+            renderUserList();
+            closeModal();
+        });
+
+        // 删除用户
+        function deleteUser(id) {
+            if (!isAdmin()) {
+                alert('只有管理员才能删除用户');
+                return;
+            }
+            
+            if (confirm('确定要删除这个用户吗？')) {
+                const users = getUsers();
+                const filteredUsers = users.filter(user => user.id !== id);
+                saveUsers(filteredUsers);
+                renderUserList();
+            }
+        }
+
+        // 点击模态框外部关闭
+        window.onclick = function(event) {
+            const modal = document.getElementById('user-modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查登录状态
+            const currentUser = getCurrentUser();
+            if (!currentUser) {
+                alert('请先登录系统');
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // 检查是否是管理员，控制新增用户按钮的显示
+            const admin = isAdmin();
+            if (!admin) {
+                document.querySelector('.add-user-btn').style.display = 'none';
+            }
+            
+            renderUserList();
+        });
+    </script>
+</body>
+</html>

@@ -11,8 +11,50 @@ document.addEventListener('DOMContentLoaded', function() {
     const backBtn = document.getElementById('back-btn');
     const powerbiIframe = document.getElementById('powerbi-iframe');
     
+    // 检查URL参数，如果包含page=main，则直接显示主页面
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('page') === 'main') {
+        loginPage.style.display = 'none';
+        mainPage.style.display = 'block';
+    }
+    
     // Power BI 报表链接
     const powerbiUrl = 'https://app.powerbi.com/view?r=eyJrIjoiYTcwOGRhMjMtZjEwMC00NmE3LWIyZmItZjEyYzNiYjE0ODQzIiwidCI6IjNiYzczNjFkLTgyNWUtNDUxMy04ZjYyLTI5NmU0ZDg5NzBjMSIsImMiOjEwfQ%3D%3D';
+    
+    // 初始化用户数据
+    function initUsers() {
+        const users = localStorage.getItem('users');
+        if (!users) {
+            // 默认管理员用户
+            const defaultUsers = [
+                {
+                    id: 1,
+                    username: 'admin',
+                    password: 'lrs123456',
+                    fullname: '管理员',
+                    email: 'leirunshen@aliyun.com',
+                    role: 'admin',
+                    created_at: new Date().toISOString()
+                },
+                {
+                    id: 2,
+                    username: 'user',
+                    password: 'password123',
+                    fullname: '普通用户',
+                    email: 'user@example.com',
+                    role: 'user',
+                    created_at: new Date().toISOString()
+                }
+            ];
+            localStorage.setItem('users', JSON.stringify(defaultUsers));
+        }
+    }
+    
+    // 获取用户列表
+    function getUsers() {
+        initUsers();
+        return JSON.parse(localStorage.getItem('users'));
+    }
     
     // 登录表单提交事件
     loginForm.addEventListener('submit', function(e) {
@@ -22,14 +64,31 @@ document.addEventListener('DOMContentLoaded', function() {
         const username = document.getElementById('username').value;
         const password = document.getElementById('password').value;
         
-        // 简单的登录验证（实际项目中应该使用后端验证）
-        // 这里使用模拟验证，实际项目中应该连接数据库进行验证
-        if (username && password) {
-            // 登录成功，切换到主页面
+        // 验证用户名和密码
+        if (!username || !password) {
+            alert('请输入用户名和密码');
+            return;
+        }
+        
+        // 检查用户名和密码是否匹配
+        const users = getUsers();
+        const isValidUser = users.some(user => 
+            user.username === username && user.password === password
+        );
+        
+        if (isValidUser) {
+            // 登录成功，获取用户信息
+            const user = users.find(user => 
+                user.username === username && user.password === password
+            );
+            // 存储当前用户信息到localStorage
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            // 切换到主页面
             loginPage.style.display = 'none';
             mainPage.style.display = 'block';
         } else {
-            alert('请输入用户名和密码');
+            // 登录失败，显示错误提示
+            alert('用户名或密码错误，请重新输入');
         }
     });
     
@@ -52,6 +111,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.querySelector('.dashboard-buttons').style.display = 'none';
                 // 隐藏header
                 header.style.display = 'none';
+            } else if (this.classList.contains('user-btn')) {
+                // 用户管理按钮，跳转到用户管理页面
+                window.location.href = 'user-management.html';
             } else {
                 // 其他按钮的功能（可以根据需要扩展）
                 alert('功能开发中：' + this.textContent);
